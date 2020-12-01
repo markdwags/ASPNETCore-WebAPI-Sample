@@ -14,8 +14,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
+using SampleWebApiAspNetCore.Entities;
 using SampleWebApiAspNetCore.Helpers;
 using SampleWebApiAspNetCore.MappingProfiles;
+using SampleWebApiAspNetCore.Models;
 using SampleWebApiAspNetCore.Repositories;
 using SampleWebApiAspNetCore.Services;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -37,6 +39,10 @@ namespace SampleWebApiAspNetCore
             services.AddOptions();
             services.AddDbContext<FoodDbContext>(opt => opt.UseInMemoryDatabase("FoodDatabase"));
             services.AddCustomCors("AllowAllOrigins");
+
+            var sqlConnectionString = Configuration["PostgreSqlConnectionString"];
+            services.AddDbContext<PlaygroundContext>(options => options.UseNpgsql(sqlConnectionString));
+            services.AddScoped<IPlayground, PlaygroundProvider>();
 
             services.AddSingleton<ISeedDataService, SeedDataService>();
             services.AddScoped<IFoodRepository, FoodSqlRepository>();
