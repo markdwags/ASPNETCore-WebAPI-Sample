@@ -44,6 +44,8 @@ namespace SampleWebApiAspNetCore
             services.AddDbContext<PlaygroundContext>(options => options.UseNpgsql(sqlConnectionString));
             services.AddScoped<IPlayground, PlaygroundProvider>();
 
+            services.AddHttpClient("MyForwardingClient");
+
             services.AddSingleton<ISeedDataService, SeedDataService>();
             services.AddScoped<IFoodRepository, FoodSqlRepository>();
             services.AddRouting(options => options.LowercaseUrls = true);
